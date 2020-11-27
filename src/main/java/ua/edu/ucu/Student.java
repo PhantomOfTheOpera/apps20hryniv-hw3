@@ -1,6 +1,8 @@
 package ua.edu.ucu;
 
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode
 class Student {
 
     private double GPA;

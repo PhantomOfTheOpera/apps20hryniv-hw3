@@ -4,6 +4,7 @@ import java.util.Arrays;
 import ua.edu.ucu.functions.MyComparator;
 import ua.edu.ucu.functions.MyFunction;
 import ua.edu.ucu.functions.MyPredicate;
+import ua.edu.ucu.smartarr.*;
 
 public class SmartArrayApp {
 
@@ -54,6 +55,38 @@ public class SmartArrayApp {
         // Hint: to convert Object[] to String[] - use the following code
         //Object[] result = studentSmartArray.toArray();
         //return Arrays.copyOf(result, result.length, String[].class);
-        return null;
+
+        MyPredicate pr = new MyPredicate() {
+            @Override
+            public boolean test(Object t) {
+                return ((Student) t).getGPA() >= 4 && ((Student) t).getYear() == 2;
+            }
+        };
+
+        MyComparator cmp = new MyComparator() {
+            @Override
+            public int compare(Object s1, Object s2) {
+                return ((Student) s1).getSurname().compareTo(((Student) s2).getSurname());
+            }
+        };
+
+        MyFunction func = new MyFunction() {
+            @Override
+            public Object apply(Object s) {
+                return ((Student) s).getSurname() + " " + ((Student) s).getName();
+            }
+        };
+        SmartArray sa = new BaseArray(students);
+
+
+        sa = new DistinctDecorator(sa);
+        sa = new FilterDecorator(sa, pr);
+        sa = new SortDecorator(sa, cmp);
+        sa = new MapDecorator(sa, func);
+
+
+        Object[] result = sa.toArray();
+        return Arrays.copyOf(result, result.length, String[].class);
     }
+
 }
